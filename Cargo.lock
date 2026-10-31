@@ -6975,7 +6975,7 @@ dependencies = [
  "url",
  "windows 0.61.3",
  "windows-core 0.61.2",
- "windows-version",
+ "windows-version 0.1.7",
  "x11-dl",
 ]
 
@@ -7015,7 +7015,7 @@ dependencies = [
  "url",
  "windows 0.62.2",
  "windows-core 0.62.2",
- "windows-version",
+ "windows-version 0.1.7",
  "x11-dl",
 ]
 
@@ -7679,7 +7679,7 @@ dependencies = [
  "urlencoding",
  "uuid 1.24.0",
  "windows 0.61.3",
- "windows-version",
+ "windows-version 0.100.0",
  "zip 6.0.0",
 ]
 
@@ -8941,7 +8941,7 @@ dependencies = [
  "objc2-quartz-core",
  "raw-window-handle",
  "windows-sys 0.61.2",
- "windows-version",
+ "windows-version 0.1.7",
 ]
 
 [[package]]
@@ -9112,6 +9112,12 @@ name = "windows-link"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0805222e57f7521d6a62e36fa9163bc891acd422f971defe97d64e70d0a4fe5"
+
+[[package]]
+name = "windows-link"
+version = "0.100.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9b39de7c7fe78858b0144c50c3fc000bab3be17d5e9b85b1053871693c7f7415"
 
 [[package]]
 name = "windows-native-keyring-store"
@@ -9355,6 +9361,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e4060a1da109b9d0326b7262c8e12c84df67cc0dbc9e33cf49e01ccc2eb63631"
 dependencies = [
  "windows-link 0.2.1",
+]
+
+[[package]]
+name = "windows-version"
+version = "0.100.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f5d2a42ae19ff386c4680514519a225a2a99bcfada6aff0ab3766f928ff84365"
+dependencies = [
+ "windows-link 0.100.0",
 ]
 
 [[package]]
@@ -9669,7 +9684,7 @@ dependencies = [
  "webview2-com 0.38.2",
  "windows 0.61.3",
  "windows-core 0.61.2",
- "windows-version",
+ "windows-version 0.1.7",
  "x11-dl",
 ]
 
@@ -9712,7 +9727,7 @@ dependencies = [
  "webview2-com 0.39.1",
  "windows 0.62.2",
  "windows-core 0.62.2",
- "windows-version",
+ "windows-version 0.1.7",
  "x11-dl",
 ]
 
