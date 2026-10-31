@@ -1,0 +1,21 @@
+MC Content Localizer (mc-content-localizer)
+==========================================
+
+Project name : MC Content Localizer / MC 汉化工坊
+Version      : 4.0.1
+Source       : https://github.com/adssadax-1/mc-content-localizer
+Releases     : https://github.com/adssadax-1/mc-content-localizer/releases
+License      : MIT (see LICENSE-MC-Content-Localizer.txt in this directory)
+
+Bundled binary provenance:
+  Official release asset, downloaded from the project's GitHub Releases page:
+  MC-Content-Localizer-v4.0.1-x64-setup.exe (sha256 of the installer:
+  f70e81e2bbc87909115531908a78b0feb05341dddfc0a75a60f9157b089fd180).
+  The application executable was extracted from that installer without
+  modifications (unmodified official release binary; main executable FileVersion
+  4.0.1, size 18435072 bytes, sha256
+  891bbd940924a7224a6ee645b980d03f2426b653b37ff155c9d159a3724dc6c3).
+
+MeetWhale bundles this tool only to make the Lab → Mod localization entry work
+out of the box. MeetWhale is not affiliated with the MC Content Localizer
+project; the tool runs as a separate process and the launcher does not modify it.

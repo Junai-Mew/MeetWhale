@@ -1,0 +1,177 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+dist
+tmp
+/out-tsc
+
+# dependencies
+node_modules
+
+# IDEs and editors
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/i18n-ally-custom-framework.yml
+
+# IDE - Trae
+.trae/*
+
+# IDE - IntelliJ
+.idea/
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+
+.turbo
+target
+generated
+.vite
+.env
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.wrangler/
+*.d1
+*.dump.sql
+access-jwt*.txt
+.vercel/
+
+.astro
+.letta
+
+# ZCode agent session data
+/.zcode/
+/zcode/
+
+# Agent skill lock files
+/skills-lock.json
+
+# Codex local verification artifacts
+/.codex-*
+
+# Local agent artifacts and caches; keep maintained instructions and Skills tracked.
+# `.agents/plans/` is the single home for agent intermediate and archived
+# artifacts, so a plain `git add` never picks them up. `.agents/AGENTS.md` and
+# `.agents/skills/` are maintained repository content and must stay tracked.
+/.dev-data/
+/.commandcode/
+/.agents/*
+!/.agents/AGENTS.md
+!/.agents/skills/
+/.agents/plans/
+/.agents/tmp/
+/.agents/cache/
+/.agents_tmp_*
+
+# Oh My Code
+.omc/
+
+packages/tooling-config/script-utils/import-sort.js
+
+target/*
+
+# Temporary databases
+*.db
+*.sqlite
+*.sqlite3
+
+plugins-workspace/*
+apps/app/resources/blockbench-skin/
+
+# Oh My OpenCode
+.omo/
+.vs/
+
+# Mimosa security scan artifacts
+.mimosa/
+
+# Local Netlify folder
+.netlify
+.cf-reconcile-test
+.cf-reconcile-state-a
+
+# Vitest failure attachments (screenshots) and cache
+.vitest-attachments/
+
+# Vitest visual-regression screenshots
+**/__screenshots__/
+
+# Playwright failure artifacts (traces, error contexts, reports)
+**/test-results/
+**/playwright-report/
+
+#local development script
+start-dev.ps1
+
+# WorkBuddy local workspace data
+.workbuddy-ai/
+
+apps/app/resources/seed-map/
+
+# Gradle build caches for the bundled Java agent
+/packages/app-lib/java/.gradle/
+/packages/app-lib/java/build/
+
+# ---------------------------------------------------------------------------
+# Open-source hygiene
+# ---------------------------------------------------------------------------
+
+# Dependencies and build output
+node_modules/
+target/
+dist/
+.turbo/
+
+# Logs, databases and local environment overrides
+*.log
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+.env*
+!.env.example
+!**/.env.example
+!packages/app-lib/.env.local
+!packages/app-lib/.env.prod
+!packages/app-lib/.env.prod-with-staging-archon
+!packages/app-lib/.env.staging
+
+# Bundled external tools fetched by scripts/fetch-tools.mjs. Only the licence,
+# notice and version records are tracked; binaries are downloaded by users/CI.
+apps/app/resources/tools/**/*.exe
+apps/app/resources/tools/**/*.msi
+apps/app/resources/tools/**/*-setup.exe
+apps/app/resources/tools/**/*.zip
+apps/app/resources/tools/**/*.tmp
+
+# Screenshot scratch files (published screenshots are tracked)
+docs/screenshots/*.tmp

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🔒 安全漏洞（私密报告）
+    url: https://github.com/mcl-launcher/MCL/security/advisories/new
+    about: 请勿在公开 Issue 中粘贴漏洞细节、PoC、账号令牌或完整日志；请使用私密报告入口。
+  - name: 📖 构建与开发文档
+    url: https://github.com/mcl-launcher/MCL/blob/main/CONTRIBUTING.md
+    about: 本地开发、构建环境与数据目录隔离的说明。

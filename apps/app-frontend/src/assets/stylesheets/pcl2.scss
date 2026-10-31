@@ -1,0 +1,1412 @@
+// PCL2 视觉皮肤层（Plain Craft Launcher 2 风格）
+//
+// 这一层只做两件事：
+//   1. 定义一套 PCL2 design tokens（`--pcl-*`），并把它们映射到应用已有的
+//      `--surface-*` / `--color-*` / `--radius-*` 令牌上；
+//   2. 用 `html.pcl` 前缀覆盖少数结构性样式（外壳、卡片、按钮、输入框）。
+//
+// 业务组件、路由与交互都不在这里改动：任何页面只要继续使用共享令牌，
+// 就会自动获得 PCL2 的外观。所有规则都以 `html.pcl` 开头，因此在
+// 未加 `pcl` 类的环境（官网、视觉测试 harness）里完全不会生效。
+
+html.pcl {
+    // ---- 品牌色阶（README §2.3.1 / §2.3.2，深海蓝）----
+    // 只在本层定义品牌值，具体皮肤继续经由 `--pcl-*` 与映射令牌消费。
+    --mar-brand-50: #eef2ff;
+    --mar-brand-100: #dde5ff;
+    --mar-brand-200: #c4cfff;
+    --mar-brand-300: #a5b6ff;
+    --mar-brand-400: #7e96ff;
+    --mar-brand-500: #4d6bfe;
+    --mar-brand-600: #3a55e0;
+    --mar-brand-700: #2c42b8;
+    --mar-brand-800: #22338c;
+    --mar-brand-900: #1a2766;
+    --mar-sea-950: #06101f;
+    --mar-sea-900: #0a1730;
+    --mar-sea-800: #122a4d;
+    --mar-sea-700: #1b3a66;
+
+    // ---- PCL2 design tokens ----
+    --pcl-bg: #f3f6fc;
+    --pcl-nav: #f8fafe;
+    --pcl-titlebar: #f8fafe;
+    --pcl-card: #ffffff;
+    --pcl-card-muted: #f8fafe;
+    --pcl-border: #dbe3f2;
+    --pcl-border-strong: #c3cde4;
+    --pcl-text: #0b1220;
+    --pcl-text-weak: #5d6b88;
+    --pcl-accent: #4d6bfe;
+    --pcl-accent-hover: #4d6bfe;
+    --pcl-accent-weak: #eef2ff;
+    // 实心按钮降一档：白字 5.91:1；hover 回品牌蓝，active 再深一档。
+    --pcl-accent-solid: #3a55e0;
+    --pcl-accent-solid-hover: #4d6bfe;
+    --pcl-accent-solid-active: #2c42b8;
+    --pcl-accent-text: #2c42b8;
+    --pcl-shadow-card: 0 1px 2px rgba(9, 16, 33, 0.06);
+    --pcl-font-family:
+        'HarmonyOS Sans SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC',
+        'Source Han Sans SC', 'Noto Sans SC', 'Segoe UI', system-ui, sans-serif;
+
+    // ---- 尺寸令牌：PCL2 的控件更紧凑 ----
+    --radius-xs: 3px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 10px;
+
+    // 组件圆角（README §2.7）：卡片 14 / 按钮 8 / 输入框 6 / 弹窗 16
+    --pcl-radius-card: 14px;
+    --pcl-radius-button: 8px;
+    --pcl-radius-input: 6px;
+    --pcl-radius-modal: 16px;
+
+    // 外壳尺寸（`App.vue` 与状态栏组件共用）
+    --pcl-titlebar-height: 44px;
+    --pcl-nav-width: 208px;
+    --pcl-footer-height: 28px;
+    --pcl-content-padding: 26px;
+
+    // 品牌实心按钮：默认跟随 accent；蓝/pink 默认档在 accent 规则里降一档。
+    --pcl-solid: var(--color-brand);
+    --pcl-solid-hover: var(--color-brand);
+    --pcl-solid-active: var(--color-brand);
+    // 品牌色作为「文字」时的可读色（浅色 #2C42B8 / 深色 #A9BBFF）。
+    --pcl-accent-text: var(--color-brand);
+
+    // 正文基准 13.5 / 1.65（README §2.4）
+    font-size: 13.5px;
+    line-height: 1.65;
+    font-family: var(--pcl-font-family);
+}
+
+// `defaults.scss` 把 `--font-standard` 与基准字号声明在 `body` 上，
+// 所以字体栈要在 `body` 上覆盖；用户自定义字体（内联 `--font-standard`）仍然优先。
+html.pcl body {
+    --font-standard: var(--pcl-font-family);
+    font-family: var(--pcl-font-family);
+    font-size: 13.5px;
+    line-height: 1.65;
+}
+
+// 标题统一 600（README §2.4）；不碰 @modrinth/ui 的弹窗/Toast 字号阶梯。
+html.pcl :is(h1, h2, h3, h4) {
+    font-weight: 600;
+}
+
+// ============================================================
+// 调色板
+// ============================================================
+
+html.pcl.light-mode,
+html.pcl.light {
+    --pcl-bg: #f3f6fc;
+    --pcl-nav: #f8fafe;
+    --pcl-titlebar: #f8fafe;
+    --pcl-card: #ffffff;
+    --pcl-card-muted: #f8fafe;
+    --pcl-border: #dbe3f2;
+    --pcl-border-strong: #c3cde4;
+    --pcl-text: #0b1220;
+    --pcl-text-weak: #5d6b88;
+    --pcl-accent: #4d6bfe;
+    --pcl-accent-hover: #4d6bfe;
+    --pcl-accent-weak: #eef2ff;
+    --pcl-accent-solid: #3a55e0;
+    --pcl-accent-solid-hover: #4d6bfe;
+    --pcl-accent-solid-active: #2c42b8;
+    --pcl-accent-text: #2c42b8;
+    --pcl-skeleton: #e6ecf7;
+    --pcl-sidebar: #ffffff;
+    --pcl-sidebar-hover: #eef3fb;
+    --pcl-sidebar-active: #eef2ff;
+    --pcl-content-bg: #f3f6fc;
+    // 品牌深海渐变（README §2.3.4），替换原 PCL 亮蓝渐变
+    --pcl-topbar-gradient: linear-gradient(90deg, #2b3e8f 0%, #4d6bfe 100%);
+    --pcl-topbar-base: var(--pcl-accent);
+    --pcl-topbar-border: #23306b;
+    --pcl-skeleton-shine: rgba(255, 255, 255, 0.72);
+
+    --surface-1: #f3f6fc;
+    --surface-1-5: #e9eff9;
+    --surface-2: #f8fafe;
+    --surface-2-5: #eef3fb;
+    --surface-3: #ffffff;
+    --surface-4: #f8fafe;
+    --surface-5: #dbe3f2;
+
+    --color-text-primary: #0b1220;
+    --color-text-default: #46536f;
+    --color-text-tertiary: #5d6b88;
+
+    --color-bg: var(--surface-1);
+    --color-super-raised-bg: #ffffff;
+    --color-divider: #e6ecf7;
+    --color-divider-dark: #c3cde4;
+    --color-button-border: #dbe3f2;
+    --color-scrollbar: #b3bfd4;
+
+    // 品牌蓝阶梯：500 用于图标/描边/选中态，600 用于实心按钮（白字 5.91:1）。
+    --color-blue-500: #4d6bfe;
+    --color-blue-600: #3a55e0;
+    --color-blue-700: #2c42b8;
+    --color-blue: var(--color-blue-500);
+
+    // 语义色（README §2.3.3）：保色相、换明度以满足白底 AA。
+    --color-green: #15803d;
+    --color-green-500: #15803d;
+    --color-green-600: #15803d;
+    --color-green-50: #e7f6ec;
+    --color-green-100: #d5f0df;
+    --color-green-highlight-opaque: #15803d;
+    --color-orange: #b45309;
+    --color-orange-400: #b45309;
+    --color-orange-500: #b45309;
+    --color-orange-50: #fdf1e2;
+    --color-orange-100: #fbe3c7;
+    --color-orange-highlight-opaque: #b45309;
+    --color-red: #c62828;
+    --color-red-500: #c62828;
+    --color-red-600: #c62828;
+    --color-red-50: #fdeaea;
+    --color-red-100: #fbd5d5;
+    --color-red-highlight-opaque: #c62828;
+    --color-warning: #b45309;
+    --color-warning-bg: #fdf1e2;
+    --color-warning-text: #8a3f07;
+
+    --shadow-inset-sm: none;
+    --shadow-button: 0 1px 2px rgba(9, 16, 33, 0.06);
+}
+
+html.pcl.dark-mode,
+html.pcl.oled-mode {
+    --pcl-bg: #070d1a;
+    --pcl-nav: #0e1628;
+    --pcl-titlebar: #0e1628;
+    --pcl-card: #0e1628;
+    --pcl-card-muted: #121d33;
+    --pcl-border: #223052;
+    --pcl-border-strong: #2e3f66;
+    --pcl-text: #e9effc;
+    --pcl-text-weak: #8b99b8;
+    --pcl-accent: #6d8bff;
+    --pcl-accent-hover: #8ba3ff;
+    --pcl-accent-weak: rgba(109, 139, 255, 0.16);
+    // 深色模式实心按钮用亮品牌蓝 + 深字（README §2.3.5：7.97:1）
+    --pcl-accent-solid: #8ba3ff;
+    --pcl-accent-solid-hover: #a9bbff;
+    --pcl-accent-solid-active: #6d8bff;
+    --pcl-accent-text: #a9bbff;
+    --pcl-skeleton: #17233b;
+    --pcl-sidebar: #0e1628;
+    --pcl-sidebar-hover: #16233b;
+    --pcl-sidebar-active: #1c2d4d;
+    --pcl-content-bg: #070d1a;
+    // 深色顶栏：深海渐变（README §2.3.4）
+    --pcl-topbar-gradient: linear-gradient(90deg, #0a1730 0%, #1b2a5e 100%);
+    --pcl-topbar-base: #0a1730;
+    --pcl-topbar-border: #1b2a5e;
+    --pcl-skeleton-shine: rgba(255, 255, 255, 0.07);
+
+    --surface-1: #070d1a;
+    --surface-1-5: #040811;
+    --surface-2: #121d33;
+    --surface-2-5: #16233b;
+    --surface-3: #0e1628;
+    --surface-4: #121d33;
+    --surface-5: #223052;
+
+    --color-text-primary: #e9effc;
+    --color-text-default: #b4c0da;
+    --color-text-tertiary: #8b99b8;
+
+    --color-bg: var(--surface-1);
+    --color-super-raised-bg: #121d33;
+    --color-divider: #223052;
+    --color-divider-dark: #2e3f66;
+    --color-button-border: #223052;
+    --color-scrollbar: #46536f;
+    --color-accent-contrast: #06101f;
+
+    --color-blue-500: #6d8bff;
+    --color-blue-600: #8ba3ff;
+    --color-blue-700: #a9bbff;
+    --color-blue: var(--color-blue-500);
+
+    --color-green: #4ade80;
+    --color-green-500: #4ade80;
+    --color-green-600: #4ade80;
+    --color-green-highlight-opaque: #4ade80;
+    --color-orange: #fbbf24;
+    --color-orange-400: #fbbf24;
+    --color-orange-500: #fbbf24;
+    --color-orange-highlight-opaque: #fbbf24;
+    --color-red: #f87171;
+    --color-red-500: #f87171;
+    --color-red-600: #f87171;
+    --color-red-highlight-opaque: #f87171;
+    --color-warning: #fbbf24;
+    --color-warning-bg: rgba(251, 191, 36, 0.12);
+    --color-warning-text: #fbbf24;
+
+    --shadow-inset-sm: none;
+    --shadow-button: none;
+}
+
+html.pcl.oled-mode {
+    --pcl-bg: #040811;
+    --pcl-nav: #040811;
+    --pcl-titlebar: #040811;
+    --pcl-card: #0b1424;
+    --pcl-card-muted: #0e1628;
+    --pcl-content-bg: #040811;
+    --pcl-sidebar: #0b1424;
+    --pcl-sidebar-hover: #121d33;
+    --pcl-sidebar-active: #16233b;
+    --surface-1: #040811;
+    --surface-1-5: #020509;
+    --surface-2: #0b1424;
+    --surface-2-5: #0e1628;
+    --surface-3: #0b1424;
+    --surface-4: #0e1628;
+    --surface-5: #1a2742;
+}
+
+// 默认强调色是「粉」（Modrinth 品牌色）与「蓝」：PCL 皮肤下两者都落到品牌蓝。
+// 绿/橙/紫/自定义强调色继续走各自调色板，实心按钮跟随 accent（--pcl-solid 默认 = --color-brand）。
+html.pcl.accent-pink,
+html.pcl.accent-blue {
+    --color-brand: var(--pcl-accent);
+    --color-brand-highlight-opaque: var(--pcl-accent);
+    --color-brand-shadow: color-mix(in srgb, var(--pcl-accent) 34%, transparent);
+    // 实心按钮降一档：浅色 #3A55E0（白字 5.91:1）/ 深色 #8BA3FF（深字 7.97:1）
+    --pcl-solid: var(--pcl-accent-solid);
+    --pcl-solid-hover: var(--pcl-accent-solid-hover);
+    --pcl-solid-active: var(--pcl-accent-solid-active);
+}
+
+// ============================================================
+// 外壳：PCL 顶栏（蓝色渐变 + 四个大 tab）/ 上下文左栏 / 底部状态栏
+// ============================================================
+
+html.pcl .app-grid-layout,
+html.pcl .app-contents {
+    --top-bar-height: 40px;
+    --left-bar-width: 190px;
+    --footer-height: 22px;
+}
+
+html.pcl .app-grid-layout {
+    background-color: var(--pcl-bg);
+}
+
+// 顶栏：品牌深海渐变；深色模式用深海渐变，保持同一套排布
+html.pcl .app-grid-statusbar {
+    background-color: var(--pcl-topbar-base, var(--pcl-accent));
+    background-image: var(--pcl-topbar-gradient);
+    border-bottom: 1px solid var(--pcl-topbar-border);
+    color: #ffffff;
+}
+
+html.pcl .app-grid-statusbar .pcl-brand-name,
+html.pcl .app-grid-statusbar .pcl-tab,
+html.pcl .app-grid-statusbar .pcl-brand-mark {
+    color: #ffffff;
+}
+
+html.pcl .app-grid-statusbar .pcl-brand-mark {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+html.pcl .pcl-tab {
+    color: rgba(255, 255, 255, 0.86);
+    transition:
+        background-color 120ms ease,
+        color 120ms ease;
+}
+
+html.pcl .pcl-tab:hover {
+    background-color: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+}
+
+html.pcl .pcl-tab.is-active {
+    background-color: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+}
+
+// 顶栏右侧沿用 AppActionBar / 窗口控制：全部改成白色系图标与文字
+html.pcl .pcl-topbar-actions {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+html.pcl .pcl-topbar-actions :is(a, span, div, button, svg) {
+    color: inherit;
+}
+
+html.pcl .pcl-topbar-actions [data-button] {
+    background-color: transparent;
+    color: #ffffff;
+}
+
+html.pcl .pcl-topbar-actions [data-button]:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+html.pcl .pcl-topbar-actions [data-button] > svg {
+    color: #ffffff;
+}
+
+// 左栏：浅色、与内容区 1px 分隔
+html.pcl .pcl-shell-sidebar,
+html.pcl .app-grid-navbar {
+    background-color: var(--pcl-sidebar);
+    border-right: 1px solid var(--pcl-border);
+    width: var(--left-bar-width);
+    padding: 0;
+}
+
+html.pcl .pcl-sidebar-group-title {
+    color: var(--pcl-text-weak);
+    letter-spacing: 0.02em;
+}
+
+html.pcl .pcl-sidebar-item {
+    position: relative;
+    height: 30px;
+    color: var(--pcl-text);
+}
+
+html.pcl .pcl-sidebar-item:hover {
+    background-color: var(--pcl-sidebar-hover);
+}
+
+html.pcl .pcl-sidebar-item.is-active {
+    background-color: var(--pcl-sidebar-active);
+    color: var(--pcl-accent-text);
+    font-weight: 600;
+}
+
+// 选中项左侧 3px 蓝色竖条
+html.pcl .pcl-sidebar-item.is-active::before,
+html.pcl .pcl-sidebar-child.is-active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 16px;
+    width: 3px;
+    transform: translateY(-50%);
+    border-radius: 0 2px 2px 0;
+    background-color: var(--color-brand);
+}
+
+html.pcl .pcl-sidebar-child {
+    position: relative;
+    height: 26px;
+    padding-left: 0.5rem;
+    color: var(--pcl-text-weak);
+}
+
+html.pcl .pcl-sidebar-child:hover {
+    background-color: var(--pcl-sidebar-hover);
+    color: var(--pcl-text);
+}
+
+html.pcl .pcl-sidebar-child.is-active {
+    color: var(--pcl-accent-text);
+    font-weight: 600;
+}
+
+// 内容区：PCL2 偏冷的浅蓝白底
+html.pcl .app-contents {
+    background-color: var(--pcl-content-bg);
+    border-top-left-radius: 0;
+}
+
+html.pcl .app-sidebar {
+    background-color: var(--pcl-card);
+    border-left-color: var(--pcl-border) !important;
+}
+
+// 底部状态栏：极细，不抢注意力（11px，README §2.7）
+html.pcl .app-grid-footer {
+    background-color: var(--pcl-titlebar);
+    border-top: 1px solid var(--pcl-border);
+    color: var(--pcl-text-weak);
+    font-size: 11px;
+    height: var(--pcl-footer-height);
+    padding-inline: 14px;
+}
+
+// ============================================================
+
+html.pcl .app-grid-layout,
+html.pcl .app-contents {
+    --top-bar-height: var(--pcl-titlebar-height);
+    --left-bar-width: var(--pcl-nav-width);
+    --footer-height: var(--pcl-footer-height);
+}
+
+// 外壳的网格结构与尺寸在 `App.vue` 的 scoped 样式里定义（那里是唯一权威），
+// 这一层只负责 PCL2 的配色与描边。
+html.pcl .app-grid-layout {
+    background-color: var(--pcl-bg);
+}
+
+html.pcl .app-grid-navbar {
+    background-color: var(--pcl-nav);
+    border-right: 1px solid var(--pcl-border);
+    padding: 0.375rem 0.375rem;
+    gap: 2px;
+}
+
+html.pcl .app-grid-statusbar {
+    background-color: var(--pcl-titlebar);
+    border-bottom: 1px solid var(--pcl-border);
+}
+
+html.pcl .app-grid-footer {
+    background-color: var(--pcl-titlebar);
+    border-top: 1px solid var(--pcl-border);
+    color: var(--pcl-text-weak);
+    font-size: 11px;
+    height: var(--pcl-footer-height);
+    padding-inline: 14px;
+}
+
+html.pcl .app-contents {
+    background-color: var(--pcl-bg);
+    border-top-left-radius: 0;
+}
+
+html.pcl .app-sidebar {
+    background-color: var(--pcl-card);
+    border-left-color: var(--pcl-border) !important;
+}
+
+// ============================================================
+// 卡片：白色大圆角卡片 + 细边框 + 左上标题分隔线
+// ============================================================
+
+html.pcl .base-card,
+html.pcl .card,
+html.pcl .navigation-card {
+    background-color: var(--pcl-card);
+    border: 1px solid var(--pcl-border);
+    border-radius: var(--pcl-radius-card);
+    box-shadow: var(--pcl-shadow-card);
+}
+
+html.pcl .card > .header:not(:last-child),
+html.pcl .base-card > .header:not(:last-child) {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--pcl-border);
+    margin-bottom: 1rem;
+}
+
+html.pcl .card > .header h1,
+html.pcl .card > .header h2,
+html.pcl .card > .header h3,
+html.pcl .card > .header h4 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--pcl-text);
+}
+
+// 设置页的分节标题与卡片之间留出 PCL2 的呼吸感
+html.pcl .settings-section-header h2 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+html.pcl .settings-section-card {
+    background: var(--pcl-card);
+    border-color: var(--pcl-border);
+}
+
+// 页面级标题栏本身就是一条细分割线（`ContentPageHeader` 已内置 border-b）
+html.pcl .content-page-header {
+    border-color: var(--pcl-border);
+}
+
+// ============================================================
+// 按钮 / 输入框：扁平、小圆角、无重阴影
+// ============================================================
+
+html.pcl [data-button] {
+    border-radius: var(--pcl-radius-button);
+    box-shadow: none;
+    font-weight: 500;
+}
+
+html.pcl [data-button].button-frame--base {
+    background-color: var(--pcl-card);
+    border-color: var(--pcl-border);
+}
+
+html.pcl [data-button].button-frame--base:hover:not(:disabled) {
+    background-color: var(--pcl-bg);
+}
+
+html.pcl [data-button].expanded-button {
+    border-radius: 0 !important;
+    width: 2.875rem;
+    min-width: 2.875rem;
+    height: var(--pcl-titlebar-height);
+    background-color: transparent;
+}
+
+html.pcl [data-button].expanded-button:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--pcl-text) 8%, transparent);
+}
+
+html.pcl [data-button].close-button:hover:not(:disabled) {
+    background-color: #e81123 !important;
+    color: #ffffff !important;
+}
+
+html.pcl .btn {
+    border-radius: var(--pcl-radius-button);
+    border: 1px solid var(--pcl-border);
+    box-shadow: none;
+}
+
+// 品牌实心按钮：默认用降一档的 solid，hover 回品牌蓝、active 再深一档。
+// 其他颜色（红/绿/橙…）继续读各自的 --color-* 令牌，不受影响。
+html.pcl .btn.btn-primary {
+    --_background-color: var(--pcl-solid);
+    --_accent-color: var(--pcl-solid);
+}
+
+html.pcl .btn.btn-primary:hover:not(:disabled) {
+    --_background-color: var(--pcl-solid-hover);
+    filter: none;
+}
+
+html.pcl .btn.btn-primary:active:not(:disabled) {
+    --_background-color: var(--pcl-solid-active);
+    filter: none;
+}
+
+// `ButtonFrame` 的 `colored` 变体把 --button-color 内联成基础调色板变量：
+// 仅当它是品牌色时改用 solid，避免把红/绿等语义实心按钮也刷成品牌蓝。
+html.pcl .button-frame--colored[style*='--color-brand'] {
+    background-color: var(--pcl-solid) !important;
+}
+
+html.pcl .button-frame--colored[style*='--color-brand']:hover:not(:disabled) {
+    background-color: var(--pcl-solid-hover) !important;
+}
+
+html.pcl input:not([type='checkbox']):not([type='radio']),
+html.pcl textarea {
+    background: var(--pcl-card);
+    border: 1px solid var(--pcl-border);
+    border-radius: var(--pcl-radius-input);
+    box-shadow: none;
+}
+
+html.pcl input:not([type='checkbox']):not([type='radio']):focus,
+html.pcl textarea:focus {
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-brand) 18%, transparent);
+}
+
+html.pcl select {
+    border-radius: var(--pcl-radius-input);
+    border: 1px solid var(--pcl-border);
+    background-color: var(--pcl-card);
+}
+
+// ============================================================
+// 实例卡片（库/主页网格）：白色卡片、8px 圆角、悬停描边变为强调蓝
+// ============================================================
+
+html.pcl .instance-card {
+    background-color: var(--pcl-card);
+    border-color: var(--pcl-border);
+    border-radius: var(--pcl-radius-card);
+    box-shadow: var(--pcl-shadow-card);
+    transition:
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+html.pcl .instance-card:hover {
+    border-color: var(--color-brand);
+    filter: none;
+    box-shadow: 0 2px 8px rgba(16, 24, 40, 0.08);
+}
+
+// 实例封面在 PCL2 里是小圆角，不用大圆角
+html.pcl .instance-card .rounded-2xl {
+    border-radius: 6px;
+}
+
+// ============================================================
+// 设置页左栏：与右侧内容一致的白色卡片面板
+// ============================================================
+
+html.pcl .settings-sidebar {
+    background: var(--pcl-card);
+    border-color: var(--pcl-border);
+}
+
+html.pcl .settings-category-button.is-active {
+    background: var(--color-brand-highlight);
+    color: var(--pcl-accent-text);
+}
+
+// ============================================================
+// 进度条 / 滚动条 / 其它细节
+// ============================================================
+
+html.pcl *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+html.pcl *::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 9999px;
+    background-color: var(--color-scrollbar);
+}
+
+html.pcl .modal-card,
+html.pcl .modal-body {
+    border-radius: var(--pcl-radius-modal);
+    border-color: var(--pcl-border);
+}
+
+// 对话框标题：PCL2 用细分割线把标题和内容分开（分割线颜色走 `--surface-5`）
+html.pcl .modal-body h1,
+html.pcl .modal-body h2,
+html.pcl .modal-body h3 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+// ============================================================
+// 骨架屏 / 占位块
+//
+// 浅色 PCL2 里卡片是纯白，原来的 `bg-surface-3`（同为白）占位块几乎不可见，
+// `bg-surface-2` 也过淡。这里把所有带 `animate-pulse` 的 surface 占位块统一
+// 换成 #E8EBEF 一档的浅灰，并叠一层轻微 shimmer；深色沿用原有阶梯。
+// ============================================================
+
+@keyframes pcl-skeleton-shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+html.pcl.light-mode
+    :is([class*='animate-pulse'][class*='bg-surface'], [class*='animate-pulse'][class*='bg-bg']) {
+    background-color: var(--pcl-skeleton);
+    background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--pcl-skeleton-shine) 50%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: pcl-skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.pcl.light-mode
+        :is(
+            [class*='animate-pulse'][class*='bg-surface'],
+            [class*='animate-pulse'][class*='bg-bg']
+        ) {
+        animation: none;
+        background-image: none;
+    }
+}
+
+// 设置页的占位块（scoped 样式里用 `--surface-3`，同样需要提亮）
+html.pcl.light-mode .settings-search-skeleton-icon,
+html.pcl.light-mode .settings-search-skeleton-line,
+html.pcl.light-mode .settings-search-skeleton-line.is-short {
+    background: var(--pcl-skeleton);
+}
+
+// ============================================================
+// 正文密度与边界
+// ============================================================
+
+// 卡片内边距统一（PCL2 的 16px 一档），描边在浅色下保持可见
+html.pcl .base-card,
+html.pcl .card,
+html.pcl .navigation-card,
+html.pcl .instance-card {
+    border-color: var(--pcl-border);
+    border-radius: var(--pcl-radius-card);
+}
+
+// 设置页的左右面板与内容面板：白卡片，与页面底色拉开层次
+html.pcl .settings-content,
+html.pcl .settings-content-skeleton {
+    background: var(--pcl-card);
+    border-color: var(--pcl-border);
+}
+
+// 主按钮（强调色填充）统一高度与圆角，避免页面之间 33/34/38px 混杂
+html.pcl [data-button].button-frame--colored,
+html.pcl [data-button].button-frame--colored-text {
+    height: 2.25rem;
+    border-radius: var(--pcl-radius-button);
+}
+
+// 一次性的扁平按钮不再带 PCL2 不需要的重阴影
+html.pcl [data-button].button-frame--base,
+html.pcl [data-button].button-frame--quiet {
+    box-shadow: none;
+}
+
+// ============================================================
+// PCL 内容区：白色圆角卡片 + 标题分隔线 + 左标签右控件行
+// ============================================================
+
+html.pcl .pcl-page {
+    color: var(--pcl-text);
+    // 内容左右留白 26px（README §2.7），纵向沿用页面的紧凑内距
+    padding-inline: var(--pcl-content-padding);
+}
+
+html.pcl .pcl-card {
+    background-color: var(--pcl-card);
+    border: 1px solid var(--pcl-border);
+    border-radius: var(--pcl-radius-card);
+    overflow: hidden;
+}
+
+html.pcl .pcl-card-header {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--pcl-border);
+    background-color: var(--pcl-card);
+}
+
+html.pcl .pcl-card-title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--pcl-text);
+}
+
+html.pcl .pcl-card-body {
+    padding: 10px 12px;
+}
+
+// 详情页顶部操作条：PCL2 白卡 + 细描边，按钮沿用 outlined 样式
+html.pcl .pcl-detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background-color: var(--pcl-card);
+    border: 1px solid var(--pcl-border);
+    border-radius: var(--pcl-radius-card);
+}
+
+html.pcl .pcl-muted {
+    color: var(--pcl-text-weak);
+}
+
+// 启动页：大号主按钮（品牌 solid 底 + 白字 5.91:1）
+html.pcl .pcl-launch-button {
+    display: inline-flex;
+    min-width: 178px;
+    height: 38px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: var(--pcl-radius-button);
+    background-color: var(--pcl-solid);
+    color: var(--color-accent-contrast);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 120ms ease,
+        filter 120ms ease,
+        transform 120ms ease;
+}
+
+html.pcl .pcl-launch-button:hover:not(:disabled) {
+    background-color: var(--pcl-solid-hover);
+    filter: brightness(1.02);
+}
+
+html.pcl .pcl-launch-button:active:not(:disabled) {
+    background-color: var(--pcl-solid-active);
+    transform: scale(0.99);
+}
+
+html.pcl .pcl-launch-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+// 版本列表行
+html.pcl .pcl-instance-row {
+    cursor: pointer;
+    border-bottom: 1px solid var(--pcl-border);
+    color: var(--pcl-text);
+    transition: background-color 100ms ease;
+}
+
+html.pcl .pcl-instance-row:last-child {
+    border-bottom: 0;
+}
+
+html.pcl .pcl-instance-row:hover {
+    background-color: var(--pcl-sidebar-hover);
+}
+
+html.pcl .pcl-instance-row.is-selected {
+    background-color: var(--pcl-sidebar-active);
+}
+
+html.pcl .pcl-row-button {
+    display: inline-flex;
+    width: 26px;
+    height: 26px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--pcl-text-weak);
+    cursor: pointer;
+}
+
+html.pcl .pcl-row-button:hover {
+    background-color: var(--surface-4);
+    color: var(--color-brand);
+}
+
+// 版本列表行右侧的删除 / 设置图标按钮：32×32、图标 18px、常显。
+// 默认透明底 + 极淡描边；hover 浅灰底；删除按钮 hover 转危险色。
+html.pcl .pcl-row-action {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--pcl-border);
+    border-radius: 6px;
+    background-color: transparent;
+    color: var(--pcl-text);
+    cursor: pointer;
+    transition:
+        background-color 100ms ease,
+        border-color 100ms ease,
+        color 100ms ease;
+}
+
+html.pcl .pcl-row-action:hover {
+    background-color: var(--pcl-sidebar-hover);
+    border-color: var(--pcl-border-strong);
+}
+
+html.pcl .pcl-row-action:focus-visible {
+    outline: 2px solid var(--pcl-accent);
+    outline-offset: 1px;
+}
+
+html.pcl .pcl-row-action--danger:hover {
+    border-color: color-mix(in srgb, var(--color-red) 35%, transparent);
+    background-color: color-mix(in srgb, var(--color-red) 12%, transparent);
+    color: var(--color-red);
+}
+
+// 小标签（加载器 / 运行中 / Latest）
+html.pcl .pcl-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 16px;
+    padding: 0 5px;
+    border-radius: 3px;
+    background-color: var(--surface-4);
+    color: var(--pcl-text-weak);
+    font-size: 10px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+html.pcl .pcl-badge-accent {
+    background-color: var(--color-brand-highlight);
+    color: var(--pcl-accent-text);
+}
+
+// 版本分组（下载页）
+html.pcl .pcl-version-group {
+    border: 1px solid var(--pcl-border);
+    border-radius: 6px;
+    overflow: hidden;
+    /* 折叠/展开后内容高度必须自然撑开：禁止作为 flex 子项被压缩，否则
+       .pcl-card-body 会把分组裁到可视高度，靠后的版本（如 1.20.1）摸不到。 */
+    flex-shrink: 0;
+}
+
+html.pcl .pcl-version-group + .pcl-version-group {
+    margin-top: 6px;
+}
+
+html.pcl .pcl-version-group-header {
+    height: 30px;
+    padding: 0 10px;
+    border: 0;
+    background-color: var(--surface-2);
+    color: var(--pcl-text);
+    cursor: pointer;
+    text-align: left;
+}
+
+html.pcl .pcl-version-group-header:hover {
+    background-color: var(--surface-4);
+}
+
+html.pcl .pcl-version-row {
+    border-top: 1px solid var(--pcl-border);
+    color: var(--pcl-text);
+}
+
+html.pcl .pcl-version-row:hover {
+    background-color: var(--pcl-sidebar-hover);
+}
+
+// 设置类页面里的「左标签 / 右控件」行：label 固定 170px
+html.pcl .pcl-form-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 32px;
+    padding: 4px 0;
+}
+
+html.pcl .pcl-form-row > .pcl-form-label {
+    flex: 0 0 170px;
+    font-size: 12px;
+    color: var(--pcl-text);
+}
+
+html.pcl .pcl-form-row > .pcl-form-control {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+// 设置页的分类栏与内容卡片：与 PCL 内容区同色系
+html.pcl .settings-content {
+    background: var(--pcl-card);
+}
+
+html.pcl .settings-content-header {
+    border-bottom: 1px solid var(--pcl-border);
+}
+
+// 顶栏里的返回/前进（小型扁平按钮）
+html.pcl .pcl-nav-history {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+}
+
+html.pcl .pcl-nav-history:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+}
+
+// ============================================================
+// 内容页右下角的返回 / 前进：裸图标（无胶囊、无底板、无描边）。
+// 32×32 点击区、22px 图标，hover 才出现圆底；挂在内容页容器上（不是窗口），
+// 与顶栏的 24px 返回/前进共用同一套 vue-router 历史。
+// ============================================================
+
+html.pcl .pcl-page-history {
+    position: absolute;
+    right: calc(var(--right-bar-width, 0px) + 24px);
+    bottom: 24px;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    pointer-events: auto;
+}
+
+html.pcl .pcl-page-history__button {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--pcl-text);
+    cursor: pointer;
+    transition:
+        background-color 120ms ease,
+        color 120ms ease;
+}
+
+html.pcl .pcl-page-history__button:hover:not(:disabled) {
+    background-color: var(--pcl-sidebar-hover);
+}
+
+html.pcl .pcl-page-history__button:disabled {
+    color: var(--pcl-text-weak);
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+html.pcl .pcl-page-history__icon {
+    width: 22px;
+    height: 22px;
+}
+
+// 终端全屏是一个独立的全屏覆盖层，历史按钮不应压在它上面
+body.modrinth-console-fullscreen-active .pcl-page-history {
+    display: none;
+}
+
+// ============================================================
+// 全窗口背景模式（整窗一张背景图 + 半透明玻璃面板）
+//
+// `html.pcl.pcl-bg-full` 由 `store/theme.ts` 在「背景 → 全窗口覆盖」模式下挂到
+// 根元素，`--pcl-bg-image-opacity` / `--pcl-glass-alpha*` 也由它按三个滑块发布。
+// 这里只改令牌和外壳配色：卡片、实例卡、设置面板、弹窗全部继续读 `--pcl-*`
+// 令牌，因此不会出现某个页面漏掉一块实心白卡的情况。
+//
+// 基色跟随主题：浅色用 rgba(255,255,255,α)，深色 / OLED 用 rgba(18,20,24,α)。
+// ============================================================
+
+html.pcl.pcl-bg-full {
+    --pcl-glass-rgb: 246 249 254;
+    // 面板磨砂强度（0~16px，默认 4px）：设置里的滑块通过内联样式发布，
+    // 这里只留启动兜底值，保证脚本就绪前也不会退回 16px 的重毛玻璃。
+    --pcl-panel-blur: 4px;
+    --pcl-glass-border: rgb(11 18 32 / 0.06);
+    --pcl-glass-border-strong: rgb(10 23 48 / 0.24);
+    --pcl-glass-highlight: rgb(10 23 48 / 0.06);
+    --pcl-glass-shadow: 0 8px 24px rgb(9 16 33 / 0.1);
+    --pcl-glass-floor: #e9eff9;
+    --pcl-glass-fallback: linear-gradient(135deg, #dbe3f2 0%, #f3f6fc 45%, #e9eff9 100%);
+
+    // 面板 / 卡片令牌全部换成半透明：任何读 `--pcl-card` 的组件自动变玻璃。
+    // Alpha 压到图片能看清的程度；文字可读性由描边 + 标题阴影兜底。
+    --pcl-card: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha, 0.26));
+    --pcl-card-muted: rgb(var(--pcl-glass-rgb) / calc(var(--pcl-glass-alpha, 0.26) * 0.7));
+    --pcl-bg: transparent;
+    --pcl-nav: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-strong, 0.42));
+    --pcl-titlebar: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-strong, 0.42));
+    --pcl-sidebar: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-strong, 0.42));
+    --pcl-content-bg: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-page, 0.08));
+    --pcl-sidebar-hover: rgb(var(--pcl-glass-rgb) / 0.16);
+    --pcl-sidebar-active: rgb(var(--pcl-glass-rgb) / 0.32);
+    --pcl-border: var(--pcl-glass-border);
+    --pcl-border-strong: var(--pcl-glass-border-strong);
+    --pcl-shadow-card: var(--pcl-glass-shadow);
+    --pcl-topbar-gradient: none;
+    --pcl-topbar-base: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-strong, 0.42));
+    --pcl-topbar-border: var(--pcl-glass-border);
+    --pcl-skeleton: rgb(var(--pcl-glass-rgb) / 0.32);
+    --pcl-skeleton-shine: rgb(255 255 255 / 0.45);
+}
+
+html.pcl.pcl-bg-full.dark-mode,
+html.pcl.pcl-bg-full.oled-mode {
+    --pcl-glass-rgb: 14 22 40;
+    --pcl-glass-border: rgb(147 180 255 / 0.1);
+    --pcl-glass-border-strong: rgb(147 180 255 / 0.28);
+    --pcl-glass-highlight: rgb(147 180 255 / 0.1);
+    --pcl-glass-shadow: 0 8px 24px rgb(2 6 14 / 0.42);
+    --pcl-glass-floor: #040811;
+    --pcl-glass-fallback: linear-gradient(135deg, #0a1730 0%, #122a4d 45%, #040811 100%);
+    --pcl-skeleton: rgb(147 180 255 / 0.12);
+    --pcl-skeleton-shine: rgb(255 255 255 / 0.06);
+}
+
+// ---- 背景层：固定铺满整窗，不随内容滚动 ----
+
+html.pcl.pcl-bg-full .launcher-background {
+    // Opaque floor: lowering "background visibility" dims the picture against the
+    // window surface instead of letting the desktop show through the window.
+    background-color: var(--pcl-glass-floor);
+}
+
+html.pcl.pcl-bg-full .launcher-background--default {
+    // 没有自定义图片时的兜底：默认渐变换成整窗背景，绝不出现一片空白。
+    background-image: var(--pcl-glass-fallback);
+}
+
+html.pcl.pcl-bg-full .launcher-background-image {
+    position: fixed;
+    inset: 0;
+    // Scale just enough that the blur's soft edge stays outside the viewport.
+    transform: scale(1.06);
+    transform-origin: center;
+    opacity: var(--pcl-bg-image-opacity, 0.65);
+}
+
+// ---- 外壳：顶栏 / 左栏 / 内容区 / 状态栏全部玻璃化 ----
+
+html.pcl.pcl-bg-full .app-grid-layout {
+    background-color: transparent;
+}
+
+html.pcl.pcl-bg-full .app-grid-layout.has-custom-background .app-grid-navbar,
+html.pcl.pcl-bg-full .app-grid-layout.has-custom-background .app-grid-statusbar {
+    // The shell's own rules paint these with an opaque surface in custom-background
+    // mode (`App.vue`), so the glass has to be forced here.
+    background-color: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-strong, 0.42)) !important;
+    background-image: none;
+    backdrop-filter: blur(var(--pcl-panel-blur, 4px)) saturate(1.2);
+}
+
+html.pcl.pcl-bg-full .app-grid-navbar {
+    border-right: 1px solid var(--pcl-glass-border);
+}
+
+html.pcl.pcl-bg-full .app-grid-navbar .pcl-shell-sidebar {
+    background-color: transparent;
+    border-right: 0;
+}
+
+html.pcl.pcl-bg-full .app-grid-statusbar {
+    border-bottom: 1px solid var(--pcl-glass-border);
+    color: var(--pcl-text);
+}
+
+html.pcl.pcl-bg-full .app-grid-footer {
+    background-color: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-strong, 0.42));
+    backdrop-filter: blur(var(--pcl-panel-blur, 4px)) saturate(1.2);
+    border-top: 1px solid var(--pcl-glass-border);
+    color: var(--pcl-text-weak);
+}
+
+html.pcl.pcl-bg-full .app-contents {
+    background-color: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-page, 0.08));
+    backdrop-filter: blur(calc(var(--pcl-panel-blur, 4px) * 0.5)) saturate(1.2);
+}
+
+// ---- 顶栏配色：从「蓝底白字」切成玻璃底深色字 ----
+
+html.pcl.pcl-bg-full .app-grid-statusbar .pcl-brand-name,
+html.pcl.pcl-bg-full .app-grid-statusbar .pcl-tab,
+html.pcl.pcl-bg-full .app-grid-statusbar .pcl-brand-mark {
+    color: var(--pcl-text);
+}
+
+html.pcl.pcl-bg-full .app-grid-statusbar .pcl-brand-mark {
+    background-color: var(--pcl-glass-highlight);
+}
+
+html.pcl.pcl-bg-full .pcl-tab {
+    color: var(--pcl-text-weak);
+}
+
+html.pcl.pcl-bg-full .pcl-tab:hover {
+    background-color: var(--pcl-glass-highlight);
+    color: var(--pcl-text);
+}
+
+html.pcl.pcl-bg-full .pcl-tab.is-active {
+    background-color: color-mix(in srgb, var(--color-brand) 16%, transparent);
+    color: var(--pcl-text);
+}
+
+html.pcl.pcl-bg-full .pcl-topbar-actions {
+    color: var(--pcl-text-weak);
+}
+
+html.pcl.pcl-bg-full .pcl-topbar-actions [data-button] {
+    color: var(--pcl-text);
+}
+
+html.pcl.pcl-bg-full .pcl-topbar-actions [data-button]:hover:not(:disabled) {
+    background-color: var(--pcl-glass-highlight);
+}
+
+html.pcl.pcl-bg-full .app-grid-statusbar .pcl-nav-history {
+    color: var(--pcl-text-weak);
+}
+
+html.pcl.pcl-bg-full .app-grid-statusbar .pcl-nav-history:hover {
+    background-color: var(--pcl-glass-highlight);
+    color: var(--pcl-text);
+}
+
+// Beta 角标在玻璃顶栏上改用深色字（原来是白底白字）
+html.pcl.pcl-bg-full .app-grid-statusbar [class*='bg-white/20'] {
+    background-color: var(--pcl-glass-highlight);
+    color: var(--pcl-text);
+}
+
+// ---- 左栏：玻璃底 + 品牌色选中块 ----
+
+html.pcl.pcl-bg-full .pcl-sidebar-group-title {
+    color: var(--pcl-text-weak);
+}
+
+html.pcl.pcl-bg-full .pcl-sidebar-item {
+    color: var(--pcl-text);
+}
+
+html.pcl.pcl-bg-full .pcl-sidebar-item:hover {
+    background-color: var(--pcl-sidebar-hover);
+}
+
+html.pcl.pcl-bg-full .pcl-sidebar-item.is-active {
+    background-color: color-mix(in srgb, var(--color-brand) 18%, transparent);
+    color: var(--color-brand);
+}
+
+html.pcl.pcl-bg-full .pcl-sidebar-child {
+    color: var(--pcl-text-weak);
+}
+
+html.pcl.pcl-bg-full .pcl-sidebar-child:hover {
+    background-color: var(--pcl-sidebar-hover);
+    color: var(--pcl-text);
+}
+
+// ---- 卡片 / 面板 / 弹窗：统一玻璃令牌，不逐页硬编码 ----
+
+html.pcl.pcl-bg-full
+    :is(
+        .pcl-card,
+        .pcl-detail-actions,
+        .base-card,
+        .card,
+        .navigation-card,
+        .instance-card,
+        .settings-sidebar,
+        .settings-content,
+        .settings-content-skeleton,
+        .settings-section-card
+    ) {
+    background-color: var(--pcl-card);
+    border-color: var(--pcl-glass-border);
+    box-shadow: var(--pcl-glass-shadow);
+    backdrop-filter: blur(var(--pcl-panel-blur, 4px)) saturate(1.2);
+}
+
+// 卡片头部与卡片同色会让两层 alpha 叠加成实色，直接透明只留分割线
+html.pcl.pcl-bg-full .pcl-card-header {
+    background-color: transparent;
+}
+
+// 玻璃变薄后标题在亮图上的可读性兜底：只加轻微阴影，不改字色。
+html.pcl.pcl-bg-full .pcl-card-title {
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+// 顶栏/左栏里的小块（品牌标记、选中块）已在上面单独处理，这里兜住列表行
+html.pcl.pcl-bg-full .pcl-instance-row:hover,
+html.pcl.pcl-bg-full .pcl-version-row:hover,
+html.pcl.pcl-bg-full .pcl-version-group-header:hover {
+    background-color: var(--pcl-sidebar-hover);
+}
+
+html.pcl.pcl-bg-full .pcl-version-group-header {
+    background-color: rgb(var(--pcl-glass-rgb) / 0.18);
+}
+
+html.pcl.pcl-bg-full .pcl-app-sidebar,
+html.pcl.pcl-bg-full .app-sidebar {
+    background-color: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-strong, 0.42));
+    border-left-color: var(--pcl-glass-border) !important;
+    backdrop-filter: blur(var(--pcl-panel-blur, 4px)) saturate(1.2);
+}
+
+// 弹窗与下拉在 body 层，使用同一套玻璃令牌
+html.pcl.pcl-bg-full .modal-body,
+html.pcl.pcl-bg-full .modal-card {
+    background-color: rgb(var(--pcl-glass-rgb) / var(--pcl-glass-alpha-strong, 0.42));
+    border-color: var(--pcl-glass-border);
+    backdrop-filter: blur(calc(var(--pcl-panel-blur, 4px) * 1.25)) saturate(1.2);
+}
+
+// 输入框 / 下拉框在玻璃卡上保持可读的实底
+html.pcl.pcl-bg-full input:not([type='checkbox']):not([type='radio']),
+html.pcl.pcl-bg-full textarea,
+html.pcl.pcl-bg-full select {
+    background-color: rgb(var(--pcl-glass-rgb) / 0.55);
+    border-color: var(--pcl-glass-border);
+}
+
+// 顶栏按钮在玻璃底上不再需要白色描边阴影
+html.pcl.pcl-bg-full [data-button].expanded-button:hover:not(:disabled) {
+    background-color: var(--pcl-glass-highlight);
+}
+
+// 设置页的分类栏与内容面板：PCL 卡片令牌已覆盖，这里只补描边与圆角
+html.pcl.pcl-bg-full .settings-content-header {
+    border-bottom: 1px solid var(--pcl-glass-border);
+}
+
+// ---- 玻璃模式：行内图标按钮与右下历史按钮 ----
+// 卡片本身已是半透明玻璃，描边/填充要跟着换成半透明白或黑，
+// 这样浅色底图与深色底图上都看得清；hover 底也按主题色半透明叠加。
+
+html.pcl.pcl-bg-full .pcl-row-action {
+    border-color: var(--pcl-glass-border);
+    color: var(--pcl-text);
+}
+
+html.pcl.pcl-bg-full .pcl-row-action:hover {
+    background-color: color-mix(in srgb, var(--pcl-text) 10%, transparent);
+    border-color: var(--pcl-glass-border-strong);
+}
+
+html.pcl.pcl-bg-full .pcl-row-action--danger:hover {
+    border-color: color-mix(in srgb, var(--color-red) 38%, transparent);
+    background-color: color-mix(in srgb, var(--color-red) 16%, transparent);
+    color: var(--color-red);
+}
+
+html.pcl.pcl-bg-full .pcl-page-history__button {
+    color: var(--pcl-text);
+    // 裸图标直接压在背景图上：浅色主题加白色柔光、深色主题加黑色柔光，
+    // 让图标在任意明暗的底图上都有轮廓。
+    filter: drop-shadow(0 1px 1px rgb(255 255 255 / 0.45));
+}
+
+html.pcl.pcl-bg-full.dark-mode .pcl-page-history__button,
+html.pcl.pcl-bg-full.oled-mode .pcl-page-history__button {
+    filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.5));
+}
+
+html.pcl.pcl-bg-full .pcl-page-history__button:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--pcl-text) 14%, transparent);
+}
+
+html.pcl.pcl-bg-full .pcl-page-history__button:disabled {
+    color: var(--pcl-text-weak);
+}

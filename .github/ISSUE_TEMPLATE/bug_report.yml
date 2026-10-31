@@ -1,0 +1,162 @@
+name: 🐛 错误报告
+description: 报告遇见神鲸（MeetWhale）中可以复现的问题
+title: '[错误] '
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你帮助改进遇见神鲸。请尽量完整地填写以下信息，以便我们定位问题。
+        上传日志或截图前，请移除账号、访问令牌、本机用户名与完整路径等隐私信息。
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: 提交前确认
+      options:
+        - label: 我已搜索[现有 Issues](https://github.com/mcl-launcher/MCL/issues)，没有发现相同问题
+          required: true
+        - label: 我正在使用最新版本，或已确认该问题在最新版本中仍然存在
+          required: true
+        - label: 我已从日志、截图和描述中移除账号、访问令牌等敏感信息
+          required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 启动器版本
+      description: 可在「设置 → 关于」中查看；便携版可看文件名或解压目录。
+      placeholder: 例如 1.10.2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operating_system
+    attributes:
+      label: 操作系统
+      options:
+        - Windows 10/11（x64）
+        - macOS（Apple Silicon）
+        - macOS（Intel）
+        - Linux（x64）
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: system_details
+    attributes:
+      label: 系统详细信息
+      description: 如果选择 Linux 或「其他」，请填写发行版、桌面环境、架构等。
+      placeholder: 例如 Ubuntu 24.04，GNOME，x64
+    validations:
+      required: false
+
+  - type: dropdown
+    id: installation_source
+    attributes:
+      label: 安装来源
+      options:
+        - GitHub Releases 安装包
+        - 便携包（portable zip）
+        - 启动器内自动更新
+        - 软件包管理器或第三方分发渠道
+        - 本地开发或源码构建
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: data_directory
+    attributes:
+      label: 数据目录（可选）
+      description: 默认是 `%APPDATA%\dev.mcl.launcher`；使用便携模式或自定义目录时请填写实际路径（可只写盘符与目录名）。
+      placeholder: 例如 %APPDATA%\dev.mcl.launcher 或 D:\Games\MeetWhale-data
+    validations:
+      required: false
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题描述
+      description: 请说明发生了什么，以及问题出现的频率。
+      placeholder: 描述实际发生的现象……
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 复现步骤
+      description: 请从启动启动器开始，按顺序列出能够触发问题的操作。
+      placeholder: |
+        1. 打开……
+        2. 点击……
+        3. 选择……
+        4. 出现……
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: 预期行为
+      description: 说明你原本期望看到的结果。
+    validations:
+      required: true
+
+  - type: input
+    id: launcher_log_path
+    attributes:
+      label: 启动器日志路径
+      description: |
+        在「设置 → 关于」中打开日志目录，或手动前往 `<数据目录>\launcher_logs`。
+        默认 Windows 路径为 `%APPDATA%\dev.mcl.launcher\launcher_logs`。
+        请填写实际路径，并优先以附件形式上传相关日志（同样需要脱敏）。
+      placeholder: 例如 %APPDATA%\dev.mcl.launcher\launcher_logs
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关日志片段（可选）
+      description: 粘贴与问题相关的日志片段，并确保其中不含敏感信息。日志很大时请附文件。
+      render: shell
+    validations:
+      required: false
+
+  - type: dropdown
+    id: custom_background
+    attributes:
+      label: 是否与自定义背景 / 玻璃效果相关
+      options:
+        - 无关，使用默认外观
+        - 使用了自定义背景图
+        - 使用了全窗口玻璃模式
+        - 调整过面板透明度或背景模糊
+        - 不确定
+    validations:
+      required: true
+
+  - type: dropdown
+    id: localizer_or_lab
+    attributes:
+      label: 是否与内置工具相关
+      options:
+        - 无关
+        - MC 汉化工坊（Mod 汉化）
+        - Blockbench 皮肤编辑器
+        - 种子地图 / 原理图工坊
+        - 命令生成器 / 配方生成器 / 渐变文字
+        - 不确定
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: 截图与补充信息
+      description: 可直接拖入截图，并补充可能有助于定位问题的信息。
+    validations:
+      required: false

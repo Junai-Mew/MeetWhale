@@ -1,0 +1,28 @@
+{
+  "bundle": {
+    "createUpdaterArtifacts": false
+  },
+  "build": {
+    "features": [
+      "updater"
+    ]
+  },
+  "app": {
+    "security": {
+      "capabilities": [
+        "core",
+        "plugins",
+        "updater"
+      ]
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IE1DTCBMYXVuY2hlciBsb2NhbCBidWlsZCBwbGFjZWhvbGRlciBrZXkKUldRbWNscGxhY2Vob2xkZXJrZXlub3RoaXJkcGFydHl2ZXJpZmljYXRpb24K",
+      "endpoints": [],
+      "windows": {
+        "installMode": "quiet"
+      }
+    }
+  }
+}
