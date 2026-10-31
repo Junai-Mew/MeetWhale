@@ -97,7 +97,7 @@ phf = { version = "0.13.1", features = ["macros"] }
 png = "0.18.0"
 portable-pty = "0.9.0"
 quartz_nbt = "0.2.9"
-quick-xml = "0.41.0"
+quick-xml = "0.42.0"
 # Stays on 0.8 until p256 updates to 0.9. Floor at 0.8.8 (MCLA-cq8v-f236-94qc).
 rand = "0.8.8"
 regex = "1.12.2"
